@@ -1,51 +1,98 @@
-# Ex8 Deque
-## DATE:
+# Ex8 Detection of Cycle and Finding the Starting Node in a Linked List
+## DATE: 28/08/2025
 ## AIM:
-To write a C function to count the number of elements present in the deque.
-
+To write a program that detects a cycle in a linked list and returns the node where the cycle begins.
+If there is no cycle, the program should return null without modifying the linked list.
 ## Algorithm
-1.Start
+1.Start slow = head and fast = head.
 
-2.Define a function count() that takes an array arr as input.
+2.Move slow by 1 step and fast by 2 steps until they meet or fast becomes null.
 
-3.Initialize a counter c to track the number of non-zero elements.
+3.If fast becomes null, return null (no cycle).
 
-4.Loop through the array from index 0 to MAX-1.
+4.Move slow to head, keep fast at meeting point.
 
-5.For each element, check if it's non-zero.\
+5.Move both one step at a time until they meet — this node is the cycle start.
 
-6.If the element is non-zero, increment the counter c.
 
-7.Return the final count of non-zero elements in the array.
-
-8.End
 ## Program:
 ```
-/*
-Program to count the number of elements present in the deque
+ /*
+program that detects a cycle in a linked list and returns the node where the cycle begins.
+If there is no cycle, the program should return null without modifying the linked list.
 Developed by: GANESH PRABHU J
-RegisterNumber: 212223220023 
-*/
-#include <stdio.h> #define MAX 10
-void addFront(int *, int, int *, int *); void addRear(int *, int, int *, int *); int delFront(int *, int *, int *); intdelRear(int *, int *, int*);
-void display(int *); int count(int *);
-*/
-int count(int *arr) { int c = 0, i; for(i=0;i<MAX;i++)
-{
-if(arr[i]!=0)
-{
-c=c+1;
-}
-}
-return c;
-}
+RegisterNumber: 212223220023
 
+*/
+class DetectCycle {
+
+    static class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    static Node detectCycle(Node head) {
+        if (head == null || head.next == null) 
+            return null;
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;          
+            fast = fast.next.next;     
+
+            if (slow == fast) {        
+                break;
+            }
+        }
+
+        if (fast == null || fast.next == null)
+            return null;
+
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return slow;   
+    }
+
+    public static void main(String[] args) {
+
+        Node head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(4);
+        head.next.next.next.next = new Node(5);
+
+        head.next.next.next.next.next = head.next.next;
+
+        Node cycleStart = detectCycle(head);
+
+        if (cycleStart != null)
+            System.out.println("Cycle starts at node: " + cycleStart.data);
+        else
+            System.out.println("No cycle detected.");
+    }
+}
+  
+*/
 ```
 
 ## Output:
 
-<img width="863" height="397" alt="437351113-21352482-6a7b-4b6f-9e2f-8da0065fe622" src="https://github.com/user-attachments/assets/79132610-a214-48b3-b965-41fae22f180f" />
+<img width="798" height="175" alt="514427923-9d8d99fc-0ab8-4708-8517-3b5c6a2663a6" src="https://github.com/user-attachments/assets/9cf07013-1fb6-4b49-94e4-8696175c6272" />
+
+
 
 
 ## Result:
-Thus, the C code to count the number of elements present in the deque is implemented successfully.
+The program successfully detects whether a cycle exists in the linked list.
+If a cycle is present, it correctly identifies and returns the node where the cycle begins.
